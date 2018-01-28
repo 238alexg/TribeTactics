@@ -7,13 +7,17 @@ public class Pawn : MonoBehaviour {
     public PawnAsset AssetInfo;
 
     public Player Owner;
-    
+
+    public Location Location;
+
     public int Health;
     public int MovesLeft;
     public int ConsumedTurnsLeft;
 
     public bool CompletedTurn;
 
+    public bool CanAct { get { return !CompletedTurn; } }
+    
     public void DealDamage(int damage)
     {
         Health -= damage;
@@ -41,5 +45,21 @@ public class Pawn : MonoBehaviour {
     public virtual int GetHealth()
     {
         return Health;
+    }
+
+    public void PlaceOnMap(Location location)
+    {
+        
+        
+    }
+
+    public bool CanAttackPawn(Pawn enemy)
+    {
+        return enemy.Location.WithinRangeOf(Location, AssetInfo.AttackDistance, false);
+    }
+    
+    public bool CanPlacePawnOnTile(Tile tile)
+    {
+        return false;
     }
 }

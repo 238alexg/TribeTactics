@@ -296,10 +296,13 @@
   <ItemGroup>
     <Compile Include="Assets\Fort.cs" />
     <Compile Include="Assets\GameAssets.cs" />
+    <Compile Include="Assets\GameplayManager.cs" />
     <Compile Include="Assets\GameSetup.cs" />
+    <Compile Include="Assets\InputManager.cs" />
     <Compile Include="Assets\Map.cs" />
     <Compile Include="Assets\Pawn.cs" />
     <Compile Include="Assets\Player.cs" />
+    <Compile Include="Assets\PlayerSignIn.cs" />
     <Compile Include="Assets\Tile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

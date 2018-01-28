@@ -6,11 +6,13 @@ using UnityEngine.Assertions;
 public class GameSetup : MonoBehaviour {
     
     public Tile TilePrefab;
+    public Pawn PawnPrefab;
     public Transform TileParent;
+    public Transform PawnParent;
 
     static int SpriteSize = 16;
 
-	public static GameSetup instance;
+	public static GameSetup Inst;
 
     public float OrthographicSize
     {
@@ -37,9 +39,9 @@ public class GameSetup : MonoBehaviour {
 
 	void Awake()
     {
-		if (GameSetup.instance == null)
+		if (GameSetup.Inst == null)
         {
-			GameSetup.instance = this;
+			GameSetup.Inst = this;
             Camera.main.orthographicSize = Screen.height / 2;
         }
         else
@@ -61,6 +63,11 @@ public class GameSetup : MonoBehaviour {
         
 	}
 
+    Vector2 tileOffset;
+    Vector2 tileSize;
+    float scaleDown;
+    Vector2 tileParentPosition;
+
 	/// <summary>
 	/// Creates the board.
 	/// </summary>
@@ -80,12 +87,12 @@ public class GameSetup : MonoBehaviour {
         Vector2 tileSpriteSize = TilePrefab.GetComponent<SpriteRenderer>().size;
 
         // Get offset for each tile
-        Vector3 tileOffset = new Vector3((horzExtent) * 2 / xSize, (vertExtent) * 2 / ySize);
+        tileOffset = new Vector3((horzExtent) * 2 / xSize, (vertExtent) * 2 / ySize);
 
         // Get localScale for each tile
-        Vector3 tileSize = new Vector3(tileOffset.x / tileSpriteSize.x, tileOffset.y / tileSpriteSize.y) ;
+        tileSize = new Vector3(tileOffset.x / tileSpriteSize.x, tileOffset.y / tileSpriteSize.y) ;
         
-        float scaleDown = 0.8f;
+        float scaleDown = 0.65f;
         tileSize *= scaleDown;
         tileOffset *= scaleDown;
 
@@ -101,7 +108,7 @@ public class GameSetup : MonoBehaviour {
 			}
 		}
 
-        Vector2 tileParentPosition = new Vector2(-Screen.width / 2, -Screen.height / 2);
+        tileParentPosition = new Vector2(-Screen.width / 2, -Screen.height / 2);
         tileParentPosition.x += (Screen.width - tileOffset.x * Map.Width) / 2;
         tileParentPosition.y += (Screen.height - tileOffset.y * Map.Height) / 2;
         TileParent.position = tileParentPosition;
@@ -113,29 +120,36 @@ public class GameSetup : MonoBehaviour {
 	public void CreateStartingPawns(Player p1, Player p2) {
         int TopRow = 0;
         int BottomRow = Map.Height - 1;
-        int xCenter = (Map.Height + 1) / 2;
+        int xCenter = (Map.Width - 1) / 2;
 
         // Leader set up
-        Pawn p1Leader = new Pawn();
+        Pawn p1Leader = InstantiatePawnAt(Map.Tiles[xCenter, BottomRow]);
         p1Leader.AssetInfo = GameAssets.Leaders[(int)p1.Tribe];
-        Map.Tiles[xCenter, BottomRow].Pawn = p1Leader;
 
-        Pawn p2Leader = new Pawn();
+        Pawn p2Leader = InstantiatePawnAt(Map.Tiles[xCenter, TopRow]);
         p2Leader.AssetInfo = GameAssets.Leaders[(int)p2.Tribe];
-        Map.Tiles[xCenter, TopRow].Pawn = p2Leader;
 
         // Swordsman set up
-        Pawn p1s1 = new Pawn(), p1s2 = new Pawn();
+        Pawn p1s1 = InstantiatePawnAt(Map.Tiles[xCenter - 1, BottomRow]);
+        Pawn p1s2 = InstantiatePawnAt(Map.Tiles[xCenter + 1, BottomRow]);
         p1s1.AssetInfo = p1s2.AssetInfo = GameAssets.Swordsmen[(int)p1.Tribe];
-        Map.Tiles[xCenter - 1, BottomRow].Pawn = p1s1;
-        Map.Tiles[xCenter + 1, BottomRow].Pawn = p1s2;
 
-        Pawn p2s1 = new Pawn(), p2s2 = new Pawn();
+        Pawn p2s1 = InstantiatePawnAt(Map.Tiles[xCenter - 1, TopRow]);
+        Pawn p2s2 = InstantiatePawnAt(Map.Tiles[xCenter + 1, TopRow]);
         p2s1.AssetInfo = p2s2.AssetInfo = GameAssets.Swordsmen[(int)p2.Tribe];
-        Map.Tiles[xCenter - 1, TopRow].Pawn = p2s1;
-        Map.Tiles[xCenter + 1, TopRow].Pawn = p2s2;
     }
-    
+
+
+    public Pawn InstantiatePawnAt(Tile tile)
+    {
+        Pawn newPawn = Instantiate(PawnPrefab, tile.transform.position, PawnPrefab.transform.rotation, PawnParent);
+        newPawn.transform.localScale = tileSize;
+        newPawn.Location.X = tile.Location.X;
+        newPawn.Location.Y = tile.Location.Y;
+        Map.Tiles[tile.Location.X, tile.Location.Y].Pawn = newPawn;
+        return newPawn;
+    }
+
 }
 
 

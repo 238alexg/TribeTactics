@@ -61,6 +61,7 @@ public class PawnAsset
     public Sprite Sprite;
     public int Attack;
     public int MaxHealth;
+    public int AttackDistance;
 }
 
 public class LeaderAsset : PawnAsset
@@ -69,6 +70,7 @@ public class LeaderAsset : PawnAsset
     {
         Attack = 2;
         MaxHealth = 10;
+        AttackDistance = 1;
     }
 }
 
@@ -78,6 +80,7 @@ public class SwordsmanAsset : PawnAsset
     {
         Attack = 2;
         MaxHealth = 2;
+        AttackDistance = 1;
     }
 }
 
@@ -87,6 +90,7 @@ public class ArcherAsset : PawnAsset
     {
         Attack = 1;
         MaxHealth = 1;
+        AttackDistance = 2;
     }
 }
 
@@ -96,6 +100,7 @@ public class KnightAsset : PawnAsset
     {
         Attack = 3;
         MaxHealth = 4;
+        AttackDistance = 1;
     }
 }
 

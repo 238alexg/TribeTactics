@@ -15,5 +15,6 @@ public class Player : MonoBehaviour
     public List<Pawn> Knights;
 
     public int Gold;
-    
+
+    public int ActionsLeft;
 }

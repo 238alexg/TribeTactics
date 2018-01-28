@@ -5,15 +5,15 @@ using UnityEngine;
 public class Map : MonoBehaviour {
 
     #region Map Size
-    public const int Width = 11;
-    public const int Height = 15;
+    public const int Width = 7;
+    public const int Height = 9;
     #endregion
 
     #region Map Gen: Mountains
     Location[] MountainSeeds;
     bool AllowLinearMountains = false;
-    const int MountainRangeValidDistance = 4;
-    const int MinMountainRanges = 3, MaxMountainRanges = 4;
+    const int MountainRangeValidDistance = 3;
+    const int MinMountainRanges = 2, MaxMountainRanges = 3;
     const int MinMountainsPerRange = 2, MaxMountainsPerRange = 3;
     #endregion
 
@@ -280,6 +280,11 @@ public struct Location
 {
     public int X;
     public int Y;
+
+    public static Location[] FiveSlice = new Location[4]
+    {
+        new Location(0, 1), new Location(1, 0), new Location(0, -1), new Location(-1, 0)
+    };
     
     public Location(int x, int y)
     {
