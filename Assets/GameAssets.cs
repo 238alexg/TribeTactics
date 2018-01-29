@@ -43,12 +43,12 @@ public class GameAssets : MonoBehaviour {
 
 public enum Tribe
 {
-    Knight,
-    Desert,
-    Pirate,
-    Nymph,
-    Dwarf,
-    Count
+    Knight = 0,
+    Desert = 1,
+    Pirate = 2,
+    Nymph = 3,
+    Dwarf = 4,
+    Count = 5
 }
 
 

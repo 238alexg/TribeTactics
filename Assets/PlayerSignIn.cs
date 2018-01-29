@@ -26,7 +26,8 @@ public class PlayerSignIn : MonoBehaviour {
     {
         for (int i = 0; i < (int)Tribe.Count; i++)
         {
-            Tribe tribe = (Tribe)i;
+            Tribe tribe = GetTribeFromButtonName(P1ClassSelections[i].name);
+
             P1ClassSelections[i].onClick.AddListener(() => PlayerClassSelection(tribe, true));
             P2ClassSelections[i].onClick.AddListener(() => PlayerClassSelection(tribe, false));
         }
@@ -48,8 +49,6 @@ public class PlayerSignIn : MonoBehaviour {
             buttonColor.a = (int)tribe == i ? 1 : 0.4f;
             tribeButtons[i].image.color = buttonColor;
         }
-
-        print((isPlayer1 ? "Player1's" : "Player2's") + " tribe is " + tribe);
         CheckForEnterGameButtonReady();
     }
 
@@ -62,7 +61,6 @@ public class PlayerSignIn : MonoBehaviour {
     {
         Player player = isPlayer1 ? GameplayManager.Inst.Player1 : GameplayManager.Inst.Player2;
         player.Name = name;
-        print((isPlayer1 ? "Player1's" : "Player2's") + " name is " + name);
         CheckForEnterGameButtonReady();
     }
 
@@ -70,5 +68,24 @@ public class PlayerSignIn : MonoBehaviour {
     {
         GameSetup.Inst.SetUpGame();
         SignInScreen.SetActive(false);
+    }
+
+    public Tribe GetTribeFromButtonName(string name)
+    {
+        switch (name)
+        {
+            case "Metal":
+                return Tribe.Knight;
+            case "Nomads":
+                return Tribe.Desert;
+            case "Pirates":
+                return Tribe.Pirate;
+            case "Nymphs":
+                return Tribe.Nymph;
+            case "Dwarves":
+                return Tribe.Dwarf;
+            default:
+                return Tribe.Count;
+        }
     }
 }

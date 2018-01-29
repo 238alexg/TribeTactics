@@ -62,7 +62,7 @@ public class GameSetup : MonoBehaviour {
     Vector2 tileOffset;
     Vector2 tileSize;
     float scaleDown;
-    Vector2 tileParentPosition;
+    Vector3 tileParentPosition;
 
 	/// <summary>
 	/// Creates the board.
@@ -104,7 +104,7 @@ public class GameSetup : MonoBehaviour {
 			}
 		}
 
-        tileParentPosition = new Vector2(-Screen.width / 2, -Screen.height / 2);
+        tileParentPosition = new Vector3(-Screen.width / 2, -Screen.height / 2, 10);
         tileParentPosition.x += (Screen.width - tileOffset.x * Map.Width) / 2;
         tileParentPosition.y += (Screen.height - tileOffset.y * Map.Height) / 2;
         TileParent.position = tileParentPosition;
@@ -117,6 +117,9 @@ public class GameSetup : MonoBehaviour {
         int TopRow = 0;
         int BottomRow = Map.Height - 1;
         int xCenter = (Map.Width - 1) / 2;
+
+        print("Tribes: " + p1.Tribe + ":" + (int)p1.Tribe + ", P2: " + p2.Tribe + ":" + (int)p2.Tribe);
+
 
         // Leader set up
         InstantiatePawnAt(Map.Tiles[xCenter, BottomRow], GameAssets.Inst.Leaders[(int)p1.Tribe], p1);
@@ -133,7 +136,9 @@ public class GameSetup : MonoBehaviour {
 
     public Pawn InstantiatePawnAt(Tile tile, PawnAssetInfo prefab, Player owner)
     {
-        Pawn newPawn = Instantiate(prefab.GetComponent<Pawn>(), tile.transform.position, PawnPrefab.transform.rotation, PawnParent);
+        Vector3 pos = tile.transform.position;
+        pos.z = -1;
+        Pawn newPawn = Instantiate(prefab.GetComponent<Pawn>(), pos, PawnPrefab.transform.rotation, PawnParent);
         newPawn.transform.localScale = tileSize;
         newPawn.Location.X = tile.Location.X;
         newPawn.Location.Y = tile.Location.Y;

@@ -52,7 +52,7 @@ public class Map : MonoBehaviour {
         GenerateExtraForestAndDesert();
         GenerateWater();
         PlaceMines();
-        PrettyPrintMap();
+        //PrettyPrintMap();
     }
 
     void GenerateMountainRanges()
@@ -133,8 +133,6 @@ public class Map : MonoBehaviour {
     {
         Location newForestLoc = GetNormalizedVectorFromDirection(forestDirection);
         Location newDesertLoc = GetNormalizedVectorFromDirection((Direction)(((int)forestDirection + 2) % 4));
-        
-        print("Forest: " + (int)forestDirection + ", desert: " + (((int)forestDirection + 2) % 4));
 
         newForestLoc += mountain;
         newDesertLoc += mountain;
