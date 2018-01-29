@@ -16,6 +16,9 @@ public class GameplayManager : MonoBehaviour {
     public Player Player1;
     public Player Player2;
 
+    public GameObject TurnPassScreen;
+    public Text TurnPassText, PlayerNameHeaderText;
+
     private void Awake()
     {
         if (Inst != null)
@@ -88,7 +91,8 @@ public class GameplayManager : MonoBehaviour {
                     && placeableTile.Pawn.Owner == Player.CurrentTurn
                     && placeableTile.Pawn == Player.CurrentTurn.Leader)
                 {
-                    Player.CurrentTurn.Swordsmen.Add(GameSetup.Inst.InstantiatePawnAt(tile));
+                    PawnAssetInfo assetInfo = Player.CurrentTurn == Player1 ? GameAssets.Inst.Swordsmen[(int)Player1.Tribe] : GameAssets.Inst.Swordsmen[(int)Player1.Tribe];
+                    Player.CurrentTurn.Swordsmen.Add(GameSetup.Inst.InstantiatePawnAt(tile, assetInfo, Player.CurrentTurn));
                 }
             }
         }
@@ -122,7 +126,15 @@ public class GameplayManager : MonoBehaviour {
 
     public void EndTurnButtonPress()
     {
+        Player.CurrentTurn = Player.CurrentTurn == Player1 ? Player2 : Player1;
+        TurnPassText.text = "Hey " + Player.CurrentTurn.Name + " it's your turn!";
+        TurnPassScreen.SetActive(true);
+    }
 
+    public void RemoveNextTurnSplashScreen()
+    {
+        PlayerNameHeaderText.text = Player.CurrentTurn.Name + "'s Turn";
+        TurnPassScreen.SetActive(false);
     }
 
     public void ChangeSelectionState(SelectionState newState)

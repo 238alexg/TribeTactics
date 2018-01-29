@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Pawn : MonoBehaviour {
 
-    public PawnAsset AssetInfo;
+    public PawnAssetInfo AssetInfo;
+    
+    public Animator Animator;
 
     public Player Owner;
 
@@ -46,13 +48,7 @@ public class Pawn : MonoBehaviour {
     {
         return Health;
     }
-
-    public void PlaceOnMap(Location location)
-    {
-        
-        
-    }
-
+   
     public bool CanAttackPawn(Pawn enemy)
     {
         return enemy.Location.WithinRangeOf(Location, AssetInfo.AttackDistance, false);

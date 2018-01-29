@@ -55,12 +55,8 @@ public class GameSetup : MonoBehaviour {
 		// Create the board and tiles
 		CreateBoard ();
 
-        Player player1 = new Player();
-        Player player2 = new Player();
-
 		// Create starting pawns on both sides
-		CreateStartingPawns (player1, player2);
-        
+		CreateStartingPawns (GameplayManager.Inst.Player1, GameplayManager.Inst.Player2);
 	}
 
     Vector2 tileOffset;
@@ -123,30 +119,33 @@ public class GameSetup : MonoBehaviour {
         int xCenter = (Map.Width - 1) / 2;
 
         // Leader set up
-        Pawn p1Leader = InstantiatePawnAt(Map.Tiles[xCenter, BottomRow]);
-        p1Leader.AssetInfo = GameAssets.Leaders[(int)p1.Tribe];
-
-        Pawn p2Leader = InstantiatePawnAt(Map.Tiles[xCenter, TopRow]);
-        p2Leader.AssetInfo = GameAssets.Leaders[(int)p2.Tribe];
+        InstantiatePawnAt(Map.Tiles[xCenter, BottomRow], GameAssets.Inst.Leaders[(int)p1.Tribe], p1);
+        InstantiatePawnAt(Map.Tiles[xCenter, TopRow], GameAssets.Inst.Leaders[(int)p2.Tribe], p2);
 
         // Swordsman set up
-        Pawn p1s1 = InstantiatePawnAt(Map.Tiles[xCenter - 1, BottomRow]);
-        Pawn p1s2 = InstantiatePawnAt(Map.Tiles[xCenter + 1, BottomRow]);
-        p1s1.AssetInfo = p1s2.AssetInfo = GameAssets.Swordsmen[(int)p1.Tribe];
+        InstantiatePawnAt(Map.Tiles[xCenter - 1, BottomRow], GameAssets.Inst.Swordsmen[(int)p1.Tribe], p1);
+        InstantiatePawnAt(Map.Tiles[xCenter + 1, BottomRow], GameAssets.Inst.Swordsmen[(int)p1.Tribe], p1);
 
-        Pawn p2s1 = InstantiatePawnAt(Map.Tiles[xCenter - 1, TopRow]);
-        Pawn p2s2 = InstantiatePawnAt(Map.Tiles[xCenter + 1, TopRow]);
-        p2s1.AssetInfo = p2s2.AssetInfo = GameAssets.Swordsmen[(int)p2.Tribe];
+        InstantiatePawnAt(Map.Tiles[xCenter - 1, TopRow], GameAssets.Inst.Swordsmen[(int)p2.Tribe], p2);
+        InstantiatePawnAt(Map.Tiles[xCenter + 1, TopRow], GameAssets.Inst.Swordsmen[(int)p2.Tribe], p2);
     }
 
 
-    public Pawn InstantiatePawnAt(Tile tile)
+    public Pawn InstantiatePawnAt(Tile tile, PawnAssetInfo prefab, Player owner)
     {
-        Pawn newPawn = Instantiate(PawnPrefab, tile.transform.position, PawnPrefab.transform.rotation, PawnParent);
+        Pawn newPawn = Instantiate(prefab.GetComponent<Pawn>(), tile.transform.position, PawnPrefab.transform.rotation, PawnParent);
         newPawn.transform.localScale = tileSize;
         newPawn.Location.X = tile.Location.X;
         newPawn.Location.Y = tile.Location.Y;
+
+        newPawn.AssetInfo = prefab;
+        newPawn.Owner = owner;
+
+        if (prefab.Class == Class.Swordsman) { owner.Swordsmen.Add(newPawn); }
+        else { owner.Leader = newPawn; }
+        
         Map.Tiles[tile.Location.X, tile.Location.Y].Pawn = newPawn;
+        
         return newPawn;
     }
 

@@ -301,6 +301,7 @@
     <Compile Include="Assets\InputManager.cs" />
     <Compile Include="Assets\Map.cs" />
     <Compile Include="Assets\Pawn.cs" />
+    <Compile Include="Assets\PawnAssetInfo.cs" />
     <Compile Include="Assets\Player.cs" />
     <Compile Include="Assets\PlayerSignIn.cs" />
     <Compile Include="Assets\Tile.cs" />

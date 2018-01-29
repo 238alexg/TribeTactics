@@ -17,4 +17,12 @@ public class Player : MonoBehaviour
     public int Gold;
 
     public int ActionsLeft;
+
+    public bool IsSignedIn
+    {
+        get
+        {
+            return Tribe != Tribe.Count && !string.IsNullOrEmpty(Name);
+        }
+    }
 }
